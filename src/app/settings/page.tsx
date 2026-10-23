@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Settings",
-  description: "Theme, plan, and local data controls for VibeCheck.",
+  description: "Theme, plan, and local data controls for ChatDecipher.",
 };
 
 const stack = [

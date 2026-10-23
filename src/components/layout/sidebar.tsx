@@ -22,12 +22,12 @@ export function Sidebar() {
       <Link
         href="/"
         className="group mx-2 flex items-center gap-3 rounded-2xl outline-offset-4"
-        aria-label="VibeCheck home"
+        aria-label="ChatDecipher home"
       >
         <BrandMark className="transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-rotate-6 group-hover:scale-105" />
         <span className="flex flex-col">
           <span className="flex items-center gap-2 font-display text-lg font-bold tracking-[-0.02em]">
-            VibeCheck
+            ChatDecipher
             <span className="rounded-full bg-secondary-container px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-on-secondary-container">
               Beta
             </span>

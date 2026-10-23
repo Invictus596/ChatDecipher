@@ -1,4 +1,4 @@
-# VibeCheck
+# ChatDecipher
 
 A privacy-first, local-processing chat analyzer and Wingman app.
 

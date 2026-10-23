@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ChatDropzone } from "@/components/chat-dropzone";
 import { ChatLibrary } from "@/components/chat-library";
 import { Icon } from "@/components/ui/icon";
+import { DB_NAME } from "@/lib/db";
 import { cardSurface, eyebrow } from "@/lib/styles";
 import { cn } from "@/lib/utils";
 
@@ -164,7 +165,7 @@ export default function AnalyzerPage() {
       <section className={cn(cardSurface, "p-5 sm:p-6")}>
         <div className="flex flex-wrap items-end justify-between gap-2">
           <div>
-            <p className={eyebrow}>IndexedDB · chat-analyse</p>
+            <p className={eyebrow}>IndexedDB · {DB_NAME}</p>
             <h3 className="mt-1 font-display text-xl font-semibold tracking-[-0.02em]">
               Local library
             </h3>

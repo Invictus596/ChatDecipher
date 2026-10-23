@@ -15,10 +15,11 @@ import {
   createDefaultPreferences,
   ensurePreferences,
   getDb,
+  migrateLegacyDatabase,
   type ThemePreference,
 } from "@/lib/db";
 
-export const THEME_STORAGE_KEY = "vibecheck:theme";
+export const THEME_STORAGE_KEY = "chatdecipher:theme";
 
 type ResolvedTheme = "light" | "dark";
 
@@ -40,9 +41,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const [systemDark, setSystemDark] = useState(false);
 
-  // Seed the singleton preferences row outside the live query.
+  // Migrate any pre-rename test data, then seed the singleton preferences row.
   useEffect(() => {
-    void ensurePreferences();
+    void (async () => {
+      await migrateLegacyDatabase();
+      await ensurePreferences();
+    })();
   }, []);
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useTheme } from "@/components/theme-provider";
 import { Icon, Spinner, type IconName } from "@/components/ui/icon";
 import {
+  DB_NAME,
   clearChatLibrary,
   getDb,
   resetLocalData,
@@ -207,7 +208,7 @@ export function DataSettings() {
   }
 
   const rows = [
-    { label: "Database", value: "chat-analyse · IndexedDB" },
+    { label: "Database", value: `${DB_NAME} · IndexedDB` },
     {
       label: "Chat exports",
       value: chatCount === undefined ? "…" : pluralize(chatCount, "row"),
