@@ -1,0 +1,303 @@
+@import "tailwindcss";
+
+/* Class-based dark mode so the preference stored in IndexedDB controls it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------------ */
+/*  Material 3 Expressive design tokens                                     */
+/*  Web adaptation: tonal surfaces, pill shapes, springy motion, emphasized  */
+/*  typography. Every token is a CSS variable so themes stay swappable.      */
+/* ------------------------------------------------------------------------ */
+
+@theme inline {
+  --color-surface: var(--md-surface);
+  --color-surface-dim: var(--md-surface-dim);
+  --color-surface-container-lowest: var(--md-surface-container-lowest);
+  --color-surface-container-low: var(--md-surface-container-low);
+  --color-surface-container: var(--md-surface-container);
+  --color-surface-container-high: var(--md-surface-container-high);
+  --color-surface-container-highest: var(--md-surface-container-highest);
+
+  --color-on-surface: var(--md-on-surface);
+  --color-on-surface-variant: var(--md-on-surface-variant);
+  --color-inverse-surface: var(--md-inverse-surface);
+  --color-inverse-on-surface: var(--md-inverse-on-surface);
+
+  --color-primary: var(--md-primary);
+  --color-on-primary: var(--md-on-primary);
+  --color-primary-container: var(--md-primary-container);
+  --color-on-primary-container: var(--md-on-primary-container);
+
+  --color-secondary: var(--md-secondary);
+  --color-on-secondary: var(--md-on-secondary);
+  --color-secondary-container: var(--md-secondary-container);
+  --color-on-secondary-container: var(--md-on-secondary-container);
+
+  --color-tertiary: var(--md-tertiary);
+  --color-on-tertiary: var(--md-on-tertiary);
+  --color-tertiary-container: var(--md-tertiary-container);
+  --color-on-tertiary-container: var(--md-on-tertiary-container);
+
+  --color-error: var(--md-error);
+  --color-on-error: var(--md-on-error);
+  --color-error-container: var(--md-error-container);
+  --color-on-error-container: var(--md-on-error-container);
+
+  --color-outline: var(--md-outline);
+  --color-outline-variant: var(--md-outline-variant);
+
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono",
+    monospace;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 32px;
+  --radius-3xl: 40px;
+
+  --animate-float: float 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-fade-up: fade-up 500ms cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-pop: pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+}
+
+:root {
+  color-scheme: light;
+
+  --md-primary: #5b4bc4;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #e6deff;
+  --md-on-primary-container: #190065;
+
+  --md-secondary: #00696d;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #9cf0f3;
+  --md-on-secondary-container: #002021;
+
+  --md-tertiary: #a63d1f;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #ffdbd0;
+  --md-on-tertiary-container: #3b0900;
+
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #410002;
+
+  --md-surface: #fbf8ff;
+  --md-surface-dim: #dbd8e4;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #f5f1fb;
+  --md-surface-container: #efebf6;
+  --md-surface-container-high: #e9e5f1;
+  --md-surface-container-highest: #e3dfec;
+
+  --md-on-surface: #1b1b22;
+  --md-on-surface-variant: #47464f;
+  --md-inverse-surface: #302f37;
+  --md-inverse-on-surface: #f3eff7;
+
+  --md-outline: #787680;
+  --md-outline-variant: #c9c5d1;
+
+  --elevation-1: 0 1px 2px rgb(24 20 40 / 0.06), 0 1px 3px 1px rgb(24 20 40 / 0.04);
+  --elevation-2: 0 2px 6px 2px rgb(24 20 40 / 0.06), 0 1px 2px rgb(24 20 40 / 0.08);
+  --elevation-3: 0 6px 16px 2px rgb(24 20 40 / 0.09), 0 2px 4px rgb(24 20 40 / 0.06);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --md-primary: #c9beff;
+  --md-on-primary: #2d1b7a;
+  --md-primary-container: #443592;
+  --md-on-primary-container: #e6deff;
+
+  --md-secondary: #80d4d7;
+  --md-on-secondary: #003738;
+  --md-secondary-container: #004f51;
+  --md-on-secondary-container: #9cf0f3;
+
+  --md-tertiary: #ffb59b;
+  --md-on-tertiary: #5c1a05;
+  --md-tertiary-container: #7e2c11;
+  --md-on-tertiary-container: #ffdbd0;
+
+  --md-error: #ffb4ab;
+  --md-on-error: #690005;
+  --md-error-container: #93000a;
+  --md-on-error-container: #ffdad6;
+
+  --md-surface: #121118;
+  --md-surface-dim: #121118;
+  --md-surface-container-lowest: #0d0c12;
+  --md-surface-container-low: #1a1921;
+  --md-surface-container: #1e1d25;
+  --md-surface-container-high: #292730;
+  --md-surface-container-highest: #34323b;
+
+  --md-on-surface: #e6e1eb;
+  --md-on-surface-variant: #c9c5d1;
+  --md-inverse-surface: #e6e1eb;
+  --md-inverse-on-surface: #302f37;
+
+  --md-outline: #928f9a;
+  --md-outline-variant: #474550;
+
+  --elevation-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px 1px rgb(0 0 0 / 0.24);
+  --elevation-2: 0 2px 6px 2px rgb(0 0 0 / 0.36), 0 1px 2px rgb(0 0 0 / 0.4);
+  --elevation-3: 0 8px 20px 4px rgb(0 0 0 / 0.42), 0 2px 6px rgb(0 0 0 / 0.4);
+}
+
+* {
+  border-color: var(--md-outline-variant);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Subtle tonal wash behind the whole app. */
+.app-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -12%, color-mix(in srgb, var(--md-primary-container) 72%, transparent), transparent 60%),
+    radial-gradient(50rem 34rem at 105% 8%, color-mix(in srgb, var(--md-tertiary-container) 58%, transparent), transparent 62%),
+    radial-gradient(46rem 32rem at 70% 110%, color-mix(in srgb, var(--md-secondary-container) 42%, transparent), transparent 64%);
+  opacity: 0.85;
+}
+
+.dark .app-aurora {
+  opacity: 0.55;
+}
+
+.m3-card {
+  background-color: var(--md-surface-container-low);
+  border: 1px solid color-mix(in srgb, var(--md-outline-variant) 62%, transparent);
+  border-radius: var(--radius-xl);
+}
+
+.glass-bar {
+  background-color: color-mix(in srgb, var(--md-surface) 78%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+}
+
+.spring {
+  transition-property: transform, box-shadow, background-color, border-color, color, opacity;
+  transition-duration: 320ms;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+.elevation-2 {
+  box-shadow: var(--elevation-2);
+}
+.elevation-3 {
+  box-shadow: var(--elevation-3);
+}
+
+.brand-gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--md-primary) 0%,
+    color-mix(in srgb, var(--md-primary) 55%, var(--md-tertiary)) 55%,
+    var(--md-tertiary) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Privacy-friendly, M3-style thin scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--md-outline) 55%, transparent) transparent;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
