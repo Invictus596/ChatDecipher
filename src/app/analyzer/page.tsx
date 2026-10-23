@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AnalyzerDashboard } from "@/components/analyzer/analyzer-dashboard";
 import { ChatDropzone } from "@/components/chat-dropzone";
 import { ChatLibrary } from "@/components/chat-library";
 import { Icon } from "@/components/ui/icon";
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Chat Analyzer",
   description:
-    "Import WhatsApp .txt or Telegram .json exports into a private, on-device library.",
+    "Import WhatsApp .txt or Telegram .json exports and get on-device message, sender, and activity analytics.",
 };
 
 const importSteps = [
@@ -26,7 +27,7 @@ const importSteps = [
   {
     icon: "chart" as const,
     title: "Parsed locally",
-    copy: "Phase 2 extracts senders, timing, and volume.",
+    copy: "Timestamped messages feed the on-device dashboard.",
   },
 ];
 
@@ -39,9 +40,9 @@ export default function AnalyzerPage() {
           Bring your own export.
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-on-surface-variant sm:text-[15px]">
-          Imports are read, validated, and saved in this browser only. Phase 2
-          will layer the quantitative parser on top of this library — no file
-          ever leaves your device.
+          Imports are read, validated, and parsed in this browser only. The
+          on-device engine extracts messages, senders, and activity before the
+          charts appear — no file ever leaves your device.
         </p>
       </header>
 
@@ -99,20 +100,20 @@ export default function AnalyzerPage() {
             </div>
           </section>
 
-          <section className="relative overflow-hidden rounded-[28px] border border-primary/20 bg-primary-container/35 p-5 sm:p-6">
+          <section className="relative overflow-hidden rounded-[28px] border border-secondary/30 bg-secondary-container/35 p-5 sm:p-6">
             <div
-              className="pointer-events-none absolute -right-8 -top-10 size-28 rounded-full bg-primary/15 blur-2xl"
+              className="pointer-events-none absolute -right-8 -top-10 size-28 rounded-full bg-secondary/15 blur-2xl"
               aria-hidden
             />
             <div className="flex items-center justify-between gap-2">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-on-primary-container/80">
-                Next up
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-on-secondary-container/80">
+                Phase 2 · On-device
               </p>
-              <span className="rounded-full bg-primary px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-on-primary">
-                Phase 2
+              <span className="rounded-full bg-secondary px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-on-secondary">
+                Live
               </span>
             </div>
-            <h3 className="mt-2 font-display text-base font-semibold text-on-primary-container">
+            <h3 className="mt-2 font-display text-base font-semibold text-on-secondary-container">
               The local parsing engine
             </h3>
             <ul className="mt-3 space-y-2">
@@ -120,24 +121,29 @@ export default function AnalyzerPage() {
                 "Regex parser for WhatsApp timestamps and senders",
                 "Telegram JSON normalizer",
                 "Messages per sender and most active days",
-                "Recharts breakdown on the dashboard",
+                "Recharts activity dashboard",
               ].map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2 text-[11px] leading-relaxed text-on-primary-container/85"
+                  className="flex items-start gap-2 text-[11px] leading-relaxed text-on-secondary-container/85"
                 >
                   <Icon
-                    name="chevronRight"
+                    name="check"
                     className="mt-0.5 size-3 shrink-0"
-                    strokeWidth={2.4}
+                    strokeWidth={2.6}
                   />
                   {item}
                 </li>
               ))}
             </ul>
+            <p className="mt-3 border-t border-secondary/20 pt-3 text-[10px] font-medium leading-relaxed text-on-secondary-container/70">
+              No model is loaded in this phase. Metrics are pure JavaScript.
+            </p>
           </section>
         </div>
       </div>
+
+      <AnalyzerDashboard />
 
       {/* What happens on import ------------------------------------------ */}
       <section className="grid gap-3 sm:grid-cols-3">
@@ -171,7 +177,7 @@ export default function AnalyzerPage() {
             </h3>
           </div>
           <p className="text-[11px] font-medium text-on-surface-variant">
-            Raw exports stay here until you delete them.
+            Raw exports and parsed results stay in this browser.
           </p>
         </div>
 

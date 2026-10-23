@@ -116,7 +116,7 @@ export function Sidebar() {
             {isPremium ? "Pro plan" : "Free plan"}
           </span>
           <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant/70">
-            v0.1 · P1
+            v0.2 · P2
           </span>
         </div>
       </div>

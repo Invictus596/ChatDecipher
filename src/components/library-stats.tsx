@@ -2,7 +2,7 @@
 
 import { useLiveQuery } from "dexie-react-hooks";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { getDb } from "@/lib/db";
+import { getDb, getChatStatus } from "@/lib/db";
 import { formatNumber, pluralize } from "@/lib/utils";
 
 type Stat = {
@@ -19,6 +19,10 @@ export function LibraryStats() {
   const isLoading = chats === undefined;
 
   const importCount = chats?.length ?? 0;
+  const parsedCount =
+    chats?.filter((chat) => getChatStatus(chat) === "parsed").length ?? 0;
+  const queuedCount =
+    chats?.filter((chat) => getChatStatus(chat) === "queued").length ?? 0;
   const messageCount =
     chats?.reduce((sum, chat) => sum + chat.messageCount, 0) ?? 0;
   const chunkCount =
@@ -39,7 +43,12 @@ export function LibraryStats() {
     {
       label: "Messages indexed",
       value: isLoading ? "—" : formatNumber(messageCount),
-      hint: "Parser lands in Phase 2",
+      hint:
+        messageCount > 0
+          ? `Across ${pluralize(parsedCount, "parsed export")}`
+          : queuedCount > 0
+            ? `${pluralize(queuedCount, "export")} parsing locally`
+            : "Import a chat to count messages",
       icon: "chat",
       tile: "bg-secondary-container text-on-secondary-container",
       accent: "bg-secondary",

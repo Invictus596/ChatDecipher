@@ -67,11 +67,10 @@ export function ChatDropzone() {
           id: createId(platform),
           platform,
           contactName: contactNameFromFile(file.name),
-          // The Phase 2 parser fills this in. Until then the export is safely
-          // persisted and visible in the local library.
           messageCount: 0,
           rawChunks: [text],
           timestamp: Date.now() + index,
+          status: "queued",
         });
 
         saved.push(file.name);
@@ -88,7 +87,7 @@ export function ChatDropzone() {
         tone: "success",
         title: `${pluralize(saved.length, "export")} saved to this device`,
         details: [
-          "Stored in IndexedDB — nothing left your browser. Sender and message analysis arrives in Phase 2.",
+          "Stored in IndexedDB and parsed on this device — scroll down for the insights.",
         ],
       });
     } else if (saved.length > 0) {

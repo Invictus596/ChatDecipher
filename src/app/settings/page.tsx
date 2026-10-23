@@ -17,6 +17,7 @@ const stack = [
   "Next.js 16 · static export",
   "Tailwind CSS 4",
   "Dexie 4 · IndexedDB",
+  "Recharts 3 · local charts",
   "WebLLM · Phase 3",
   "Tesseract.js · Phase 4",
 ];
@@ -50,8 +51,8 @@ export default function SettingsPage() {
               This build
             </h3>
             <p className="mt-2 text-[11px] leading-relaxed text-on-surface-variant">
-              Phase 1 of the local-first chat intelligence app: UI shell, theme,
-              IndexedDB schema, and export intake.
+              Phase 2 of the local-first chat intelligence app: UI shell, theme,
+              IndexedDB, export intake, on-device parsers, metrics, and charts.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -77,7 +78,7 @@ export default function SettingsPage() {
             </div>
 
             <p className="mt-4 font-mono text-[10px] text-on-surface-variant/70">
-              v0.1.0 · build phase 1 / 5
+              v0.2.0 · build phase 2 / 5
             </p>
           </section>
         </div>

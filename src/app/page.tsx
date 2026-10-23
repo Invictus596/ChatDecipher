@@ -10,22 +10,22 @@ const roadmap = [
     phase: 1,
     title: "Shell & local storage",
     note: "Sidebar, Dexie, uploads",
-    status: "Live now",
+    status: "Done",
     tone: "live",
   },
   {
     phase: 2,
     title: "Parsing engine",
     note: "Senders, timelines, charts",
-    status: "Next",
-    tone: "next",
+    status: "Live now",
+    tone: "live",
   },
   {
     phase: 3,
     title: "WebLLM vibe check",
     note: "On-device summaries",
-    status: "Queued",
-    tone: "queued",
+    status: "Next",
+    tone: "next",
   },
   {
     phase: 4,
@@ -164,7 +164,7 @@ export default function DashboardPage() {
               </h2>
             </div>
             <span className="rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-on-primary-container">
-              Phase 1
+              Phase 2
             </span>
           </div>
 
@@ -174,18 +174,18 @@ export default function DashboardPage() {
                 key={item.phase}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-2 py-2.5 transition-colors",
-                  item.phase === 1 && "bg-surface-container-high/60",
+                  item.phase === 2 && "bg-surface-container-high/60",
                 )}
               >
                 <span
                   className={cn(
                     "grid size-7 shrink-0 place-items-center rounded-full text-[11px] font-bold",
-                    item.phase === 1
+                    item.tone === "live"
                       ? "bg-primary text-on-primary"
                       : "bg-surface-container-highest text-on-surface-variant",
                   )}
                 >
-                  {item.phase === 1 ? (
+                  {item.tone === "live" ? (
                     <Icon name="check" className="size-3.5" strokeWidth={3} />
                   ) : (
                     item.phase
@@ -325,7 +325,7 @@ function HeroPreview() {
         </div>
 
         <p className="mt-3 text-center text-[9px] leading-relaxed text-on-surface-variant/80">
-          Illustrative preview — real metrics are computed on-device in Phase 2.
+          Illustrative preview — open the analyzer for live on-device metrics.
         </p>
       </div>
     </div>

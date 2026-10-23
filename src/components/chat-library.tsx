@@ -4,7 +4,13 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Icon, Spinner } from "@/components/ui/icon";
-import { getDb, type ChatPlatform, type ParsedChat } from "@/lib/db";
+import {
+  getDb,
+  getChatStatus,
+  type ChatPlatform,
+  type ChatStatus,
+  type ParsedChat,
+} from "@/lib/db";
 import { PLATFORM_LABELS } from "@/lib/chat-files";
 import { btnGhost, btnOutline } from "@/lib/styles";
 import { cn, formatRelativeTime, pluralize } from "@/lib/utils";
@@ -27,6 +33,30 @@ const platformStyles: Record<
   },
 };
 
+const statusStyles: Record<
+  ChatStatus,
+  { label: string; badge: string; dot: string; detail: string }
+> = {
+  parsed: {
+    label: "Parsed",
+    badge: "bg-secondary-container/60 text-on-secondary-container",
+    dot: "bg-secondary",
+    detail: "parsed on-device",
+  },
+  queued: {
+    label: "Queued",
+    badge: "bg-tertiary-container/60 text-on-tertiary-container",
+    dot: "bg-tertiary",
+    detail: "queued for parsing",
+  },
+  error: {
+    label: "Error",
+    badge: "bg-error-container/60 text-on-error-container",
+    dot: "bg-error",
+    detail: "couldn’t parse",
+  },
+};
+
 type ChatLibraryProps = {
   limit?: number;
   showClear?: boolean;
@@ -46,6 +76,7 @@ export function ChatLibrary({
     undefined,
   );
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [retryingId, setRetryingId] = useState<string | null>(null);
   const [confirmingClear, setConfirmingClear] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
 
@@ -63,6 +94,18 @@ export function ChatLibrary({
       await getDb().parsedChats.delete(chat.id);
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function retryChat(chat: ParsedChat) {
+    setRetryingId(chat.id);
+    try {
+      await getDb().parsedChats.update(chat.id, {
+        status: "queued",
+        parseError: undefined,
+      });
+    } finally {
+      setRetryingId(null);
     }
   }
 
@@ -128,7 +171,11 @@ export function ChatLibrary({
       <ul className="space-y-2.5">
         {visibleChats.map((chat) => {
           const meta = platformStyles[chat.platform];
+          const status = getChatStatus(chat);
+          const statusStyle = statusStyles[status];
           const isDeleting = deletingId === chat.id;
+          const isRetrying = retryingId === chat.id;
+          const isBusy = isDeleting || isRetrying;
 
           return (
             <li
@@ -136,7 +183,7 @@ export function ChatLibrary({
               className={cn(
                 "group flex items-center gap-3 rounded-[20px] border border-outline-variant/45 bg-surface-container-lowest/65 p-3.5",
                 "transition-[opacity,transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-0.5 hover:bg-surface-container-lowest hover:shadow-[var(--elevation-1)]",
-                isDeleting && "pointer-events-none scale-[0.99] opacity-50",
+                isBusy && "pointer-events-none scale-[0.99] opacity-50",
               )}
             >
               <span
@@ -155,21 +202,53 @@ export function ChatLibrary({
                 <p className="mt-0.5 truncate text-[11px] text-on-surface-variant">
                   {PLATFORM_LABELS[chat.platform]} ·{" "}
                   {formatRelativeTime(chat.timestamp)} ·{" "}
-                  {pluralize(chat.rawChunks.length, "chunk")} stored
+                  {status === "parsed"
+                    ? `${pluralize(chat.messageCount, "message")} ${
+                        statusStyle.detail
+                      }`
+                    : status === "error"
+                      ? (chat.parseError ?? statusStyle.detail)
+                      : `${pluralize(chat.rawChunks.length, "chunk")} ${
+                          statusStyle.detail
+                        }`}
                 </p>
               </div>
 
-              <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-tertiary-container/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-on-tertiary-container md:inline-flex">
-                <span className="size-1.5 rounded-full bg-tertiary" aria-hidden />
-                Queued
+              <span
+                className={cn(
+                  "hidden shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] md:inline-flex",
+                  statusStyle.badge,
+                )}
+              >
+                <span
+                  className={cn("size-1.5 rounded-full", statusStyle.dot)}
+                  aria-hidden
+                />
+                {statusStyle.label}
               </span>
+
+              {status === "error" ? (
+                <button
+                  type="button"
+                  onClick={() => void retryChat(chat)}
+                  className="grid size-9 shrink-0 place-items-center rounded-full text-on-surface-variant transition-colors duration-200 hover:bg-primary-container hover:text-on-primary-container"
+                  aria-label={`Retry parsing ${chat.contactName}`}
+                  disabled={isBusy}
+                >
+                  {isRetrying ? (
+                    <Spinner className="size-4" />
+                  ) : (
+                    <Icon name="refresh" className="size-[17px]" />
+                  )}
+                </button>
+              ) : null}
 
               <button
                 type="button"
                 onClick={() => void removeChat(chat)}
                 className="grid size-9 shrink-0 place-items-center rounded-full text-on-surface-variant transition-colors duration-200 hover:bg-error-container hover:text-on-error-container sm:opacity-60 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 aria-label={`Delete ${chat.contactName}`}
-                disabled={isDeleting}
+                disabled={isBusy}
               >
                 {isDeleting ? (
                   <Spinner className="size-4" />

@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from "dexie";
+import type { ChatMetrics } from "@/lib/metrics";
 
 /**
  * Local-first persistence.
@@ -9,6 +10,8 @@ import Dexie, { type EntityTable } from "dexie";
 
 export type ChatPlatform = "whatsapp" | "telegram" | "unknown";
 
+export type ChatStatus = "queued" | "parsed" | "error";
+
 export type ThemePreference = "light" | "dark" | "system";
 
 export interface ParsedChat {
@@ -17,12 +20,23 @@ export interface ParsedChat {
   platform: ChatPlatform;
   /** Human-friendly name shown in the library. */
   contactName: string;
-  /** 0 until the Phase 2 parser indexes the export. */
+  /** Parsed message count; 0 while queued or if parsing failed. */
   messageCount: number;
   /** Raw export text, split into token-friendly chunks by later phases. */
   rawChunks: string[];
   /** Import time, epoch milliseconds. */
   timestamp: number;
+  /**
+   * Parse state. Records created before Phase 2 have no status and are treated
+   * as queued, so they upgrade automatically the first time the analyzer opens.
+   */
+  status?: ChatStatus;
+  /** Derived on-device metrics for the dashboard (Phase 2). */
+  metrics?: ChatMetrics;
+  parsedAt?: number;
+  parserVersion?: number;
+  /** Human-readable reason shown when an export cannot be parsed. */
+  parseError?: string;
 }
 
 export interface UserPreferences {
@@ -56,6 +70,11 @@ export function createDefaultPreferences(): UserPreferences {
     premiumStatus: false,
     updatedAt: Date.now(),
   };
+}
+
+/** Phase 1 rows have no status yet; they behave as queued. */
+export function getChatStatus(chat: Pick<ParsedChat, "status">): ChatStatus {
+  return chat.status ?? "queued";
 }
 
 class ChatDecipherDatabase extends Dexie {
