@@ -55,6 +55,11 @@ npm run preview    # serve ./out with `serve`
 Deliberately **not** built yet: message parsing and metrics (Phase 2), WebLLM
 (Phase 3), OCR/Wingman generation (Phase 4), premium gating (Phase 5).
 
+## Docs
+
+- [Android packaging plan](docs/android-packaging.md) — PWA-first, TWA for the
+  Play Store, with the WebGPU/WebView constraints and test matrix.
+
 ## Privacy model
 
 - Static export → no server rendering of user data, deployable anywhere.
