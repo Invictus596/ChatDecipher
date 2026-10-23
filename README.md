@@ -63,6 +63,14 @@ npm run preview    # serve ./out with `serve`
 
 ![ChatDecipher analyzer with on-device charts](docs/analyzer.png)
 
+### A real export, parsed locally
+
+![A real 376-message WhatsApp export analyzed entirely on-device, with 3 senders, 18 active days, and a 189-message peak day](docs/analyzer-live.png)
+
+The capture above is a 376-message WhatsApp export processed in the browser:
+3 senders, 18 active days, 20.9 messages per active day, and a 189-message peak
+on Oct 23, 2026. No message content or metrics left the device.
+
 ### Phase 1 foundations
 
 - Desktop sidebar, sticky top bar, mobile bottom navigation, skip link.
