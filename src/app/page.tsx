@@ -17,22 +17,22 @@ const roadmap = [
     phase: 2,
     title: "Parsing engine",
     note: "Senders, timelines, charts",
-    status: "Live now",
+    status: "Done",
     tone: "live",
   },
   {
     phase: 3,
     title: "WebLLM vibe check",
     note: "On-device summaries",
-    status: "Next",
-    tone: "next",
+    status: "Live now",
+    tone: "live",
   },
   {
     phase: 4,
     title: "Wingman mode",
     note: "Screenshot OCR + replies",
-    status: "Queued",
-    tone: "queued",
+    status: "Next",
+    tone: "next",
   },
   {
     phase: 5,
@@ -164,7 +164,7 @@ export default function DashboardPage() {
               </h2>
             </div>
             <span className="rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-on-primary-container">
-              Phase 2
+              Phase 3
             </span>
           </div>
 
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                 key={item.phase}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-2 py-2.5 transition-colors",
-                  item.phase === 2 && "bg-surface-container-high/60",
+                  item.phase === 3 && "bg-surface-container-high/60",
                 )}
               >
                 <span
@@ -240,8 +240,8 @@ export default function DashboardPage() {
           },
           {
             icon: "cpu" as const,
-            title: "WebGPU when ready",
-            copy: "Phase 3 brings a quantized model you download once.",
+            title: "WebGPU, on demand",
+            copy: "Download a small model once; inference runs in a worker.",
             tone: "text-tertiary",
           },
         ].map((item) => (
@@ -325,7 +325,7 @@ function HeroPreview() {
         </div>
 
         <p className="mt-3 text-center text-[9px] leading-relaxed text-on-surface-variant/80">
-          Illustrative preview — open the analyzer for live on-device metrics.
+          Illustrative preview — run a live local Vibe Check in the analyzer.
         </p>
       </div>
     </div>

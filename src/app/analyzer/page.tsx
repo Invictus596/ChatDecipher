@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Chat Analyzer",
   description:
-    "Import WhatsApp .txt or Telegram .json exports and get on-device message, sender, and activity analytics.",
+    "Import WhatsApp .txt or Telegram .json exports for on-device metrics, charts, and a local WebLLM Vibe Check.",
 };
 
 const importSteps = [
@@ -41,8 +41,9 @@ export default function AnalyzerPage() {
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-on-surface-variant sm:text-[15px]">
           Imports are read, validated, and parsed in this browser only. The
-          on-device engine extracts messages, senders, and activity before the
-          charts appear — no file ever leaves your device.
+          on-device engine extracts messages, senders, and activity, then an
+          optional local model can write a Vibe Check — no file ever leaves your
+          device.
         </p>
       </header>
 
@@ -107,21 +108,21 @@ export default function AnalyzerPage() {
             />
             <div className="flex items-center justify-between gap-2">
               <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-on-secondary-container/80">
-                Phase 2 · On-device
+                Phase 3 · Local AI
               </p>
               <span className="rounded-full bg-secondary px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-on-secondary">
                 Live
               </span>
             </div>
             <h3 className="mt-2 font-display text-base font-semibold text-on-secondary-container">
-              The local parsing engine
+              The on-device Vibe Check
             </h3>
             <ul className="mt-3 space-y-2">
               {[
-                "Regex parser for WhatsApp timestamps and senders",
-                "Telegram JSON normalizer",
-                "Messages per sender and most active days",
-                "Recharts activity dashboard",
+                "WebLLM runs in a dedicated Web Worker",
+                "Llama 3.2 1B or Qwen 2.5 1.5B, cached locally",
+                "Streams a Markdown tone and topic summary",
+                "Polite fallback when WebGPU is unavailable",
               ].map((item) => (
                 <li
                   key={item}
@@ -137,7 +138,8 @@ export default function AnalyzerPage() {
               ))}
             </ul>
             <p className="mt-3 border-t border-secondary/20 pt-3 text-[10px] font-medium leading-relaxed text-on-secondary-container/70">
-              No model is loaded in this phase. Metrics are pure JavaScript.
+              Model weights download once and stay in the browser cache. Chat
+              text is passed only to the local worker.
             </p>
           </section>
         </div>

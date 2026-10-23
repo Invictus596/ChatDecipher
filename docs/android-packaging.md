@@ -82,7 +82,7 @@ leave the phone, and only with redacted text.
 - Mobile AI policy: if a device has no usable WebGPU (or Adreno warm-up fails),
   do we (a) hide local AI, (b) offer cloud-only Pro, or (c) recommend desktop?
 
-### 1. PWA baseline (web work, after Phase 2)
+### 1. PWA baseline (web work, after Phase 3)
 
 - Add `manifest.webmanifest` (**not** a dynamic route; static export friendly):
   `name`, `short_name`, `start_url: "/"`, `scope: "/"`, `display: "standalone"`,
@@ -123,10 +123,12 @@ bubblewrap init --manifest https://<domain>/manifest.webmanifest
 
 ### 4. WebGPU capability layer (Phase 3)
 
-This is the most important mobile-specific engineering work:
+The web baseline is implemented: `navigator.gpu` + adapter detection, a polite
+fallback, opt-in model downloads with progress/cancel, and two lightweight model
+choices. Before Android rollout, harden the capability layer:
 
-- Detect `navigator.gpu`; request an adapter; read adapter info, limits
-  (`maxBufferSize`, `maxStorageBufferBindingSize`), and `shader-f16`.
+- Read adapter info, limits (`maxBufferSize`,
+  `maxStorageBufferBindingSize`), and `shader-f16`.
 - Gate model choices by measured capability:
   - low: no local model, explain why;
   - mid: 0.5B class quantized model;

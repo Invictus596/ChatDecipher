@@ -18,6 +18,7 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { ActivityChart, SenderChart } from "@/components/analyzer/insights-charts";
+import { ModelLoader } from "@/components/model-loader";
 import { Icon, Spinner } from "@/components/ui/icon";
 import { PLATFORM_LABELS } from "@/lib/chat-files";
 import {
@@ -245,7 +246,7 @@ export function AnalyzerDashboard() {
     <section aria-labelledby="insights-heading" className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className={eyebrow}>Phase 2 · On-device</p>
+          <p className={eyebrow}>Phase 2 · Metrics</p>
           <h3
             id="insights-heading"
             className="mt-1 font-display text-2xl font-semibold tracking-[-0.025em]"
@@ -254,7 +255,7 @@ export function AnalyzerDashboard() {
           </h3>
           <p className="mt-1.5 max-w-xl text-xs leading-relaxed text-on-surface-variant sm:text-sm">
             Counts, senders, and rhythm — computed from the raw export in this
-            tab. No AI, no server, no upload.
+            tab. The Vibe Check below adds optional local AI, still on-device.
           </p>
         </div>
 
@@ -343,7 +344,8 @@ export function AnalyzerDashboard() {
           </div>
         </div>
       ) : (
-        <div className="rounded-[32px] border border-outline-variant/60 bg-surface-container-low/70 p-4 sm:p-6">
+        <>
+          <div className="rounded-[32px] border border-outline-variant/60 bg-surface-container-low/70 p-4 sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -471,7 +473,9 @@ export function AnalyzerDashboard() {
               ))}
             </div>
           )}
-        </div>
+          </div>
+          <ModelLoader chat={selected} />
+        </>
       )}
     </section>
   );

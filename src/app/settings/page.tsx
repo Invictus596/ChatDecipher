@@ -18,7 +18,7 @@ const stack = [
   "Tailwind CSS 4",
   "Dexie 4 · IndexedDB",
   "Recharts 3 · local charts",
-  "WebLLM · Phase 3",
+  "WebLLM · WebGPU worker",
   "Tesseract.js · Phase 4",
 ];
 
@@ -51,8 +51,9 @@ export default function SettingsPage() {
               This build
             </h3>
             <p className="mt-2 text-[11px] leading-relaxed text-on-surface-variant">
-              Phase 2 of the local-first chat intelligence app: UI shell, theme,
-              IndexedDB, export intake, on-device parsers, metrics, and charts.
+              Phase 3 of the local-first chat intelligence app: on-device
+              parsers, metrics, charts, and an optional WebLLM Vibe Check that
+              runs in a WebGPU Web Worker.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -78,7 +79,7 @@ export default function SettingsPage() {
             </div>
 
             <p className="mt-4 font-mono text-[10px] text-on-surface-variant/70">
-              v0.2.0 · build phase 2 / 5
+              v0.3.0 · build phase 3 / 5
             </p>
           </section>
         </div>

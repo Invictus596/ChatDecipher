@@ -217,7 +217,8 @@ export function DataSettings() {
       label: "Preference rows",
       value: preferenceRows === undefined ? "…" : String(preferenceRows),
     },
-    { label: "Network egress", value: "Never on the free tier" },
+    { label: "Chat text egress", value: "Never — local only" },
+    { label: "Model weights", value: "Opt-in download" },
   ];
 
   return (
@@ -244,6 +245,12 @@ export function DataSettings() {
           </div>
         ))}
       </dl>
+
+      <p className="mt-3 text-[11px] leading-relaxed text-on-surface-variant">
+        Vibe Check is optional. When you load a model, the browser downloads its
+        weights once and caches them; chat text is only sent to the local Web
+        Worker.
+      </p>
 
       <div className="mt-4 space-y-2.5">
         {confirming === null ? (

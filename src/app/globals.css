@@ -242,6 +242,142 @@ body {
   color: transparent;
 }
 
+/* Markdown returned by the local model. Kept dependency-free and theme-aware. */
+.vibe-markdown {
+  color: var(--md-on-surface);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.vibe-markdown > :first-child {
+  margin-top: 0;
+}
+
+.vibe-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.vibe-markdown h1,
+.vibe-markdown h2,
+.vibe-markdown h3,
+.vibe-markdown h4 {
+  color: var(--md-on-surface);
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 1rem 0 0.45rem;
+}
+
+.vibe-markdown h1 {
+  font-size: 1.2rem;
+}
+
+.vibe-markdown h2 {
+  font-size: 1.08rem;
+}
+
+.vibe-markdown h3,
+.vibe-markdown h4 {
+  font-size: 0.96rem;
+}
+
+.vibe-markdown p {
+  margin: 0.6rem 0;
+}
+
+.vibe-markdown ul,
+.vibe-markdown ol {
+  margin: 0.6rem 0;
+  padding-left: 1.25rem;
+}
+
+.vibe-markdown ul {
+  list-style: disc;
+}
+
+.vibe-markdown ol {
+  list-style: decimal;
+}
+
+.vibe-markdown li {
+  margin: 0.25rem 0;
+  padding-left: 0.1rem;
+}
+
+.vibe-markdown li::marker {
+  color: var(--md-primary);
+}
+
+.vibe-markdown strong {
+  color: var(--md-on-surface);
+  font-weight: 700;
+}
+
+.vibe-markdown em {
+  font-style: italic;
+}
+
+.vibe-markdown a {
+  color: var(--md-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vibe-markdown code {
+  background-color: var(--md-surface-container-high);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.1rem 0.35rem;
+}
+
+.vibe-markdown pre {
+  background-color: var(--md-surface-container-high);
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  padding: 0.75rem;
+}
+
+.vibe-markdown pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.vibe-markdown blockquote {
+  border-left: 3px solid var(--md-primary);
+  color: var(--md-on-surface-variant);
+  margin: 0.75rem 0;
+  padding-left: 0.75rem;
+}
+
+.vibe-markdown hr {
+  border: 0;
+  border-top: 1px solid var(--md-outline-variant);
+  margin: 1rem 0;
+}
+
+.vibe-markdown table {
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin: 0.75rem 0;
+  width: 100%;
+}
+
+.vibe-markdown th,
+.vibe-markdown td {
+  border: 1px solid var(--md-outline-variant);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+}
+
+.vibe-markdown th {
+  background-color: var(--md-surface-container-high);
+  font-weight: 700;
+}
+
 /* Privacy-friendly, M3-style thin scrollbars. */
 * {
   scrollbar-width: thin;

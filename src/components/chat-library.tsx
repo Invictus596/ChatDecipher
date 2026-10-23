@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Icon, Spinner } from "@/components/ui/icon";
 import {
+  clearChatLibrary,
+  deleteChat,
   getDb,
   getChatStatus,
   type ChatPlatform,
@@ -91,7 +93,7 @@ export function ChatLibrary({
   async function removeChat(chat: ParsedChat) {
     setDeletingId(chat.id);
     try {
-      await getDb().parsedChats.delete(chat.id);
+      await deleteChat(chat.id);
     } finally {
       setDeletingId(null);
     }
@@ -112,7 +114,7 @@ export function ChatLibrary({
   async function clearAll() {
     setIsClearing(true);
     try {
-      await getDb().parsedChats.clear();
+      await clearChatLibrary();
       setConfirmingClear(false);
     } finally {
       setIsClearing(false);

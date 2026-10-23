@@ -62,14 +62,25 @@ export async function processChat(
       throw new Error("No text messages found in this export.");
     }
 
-    await db.parsedChats.update(chatId, {
-      status: "parsed",
-      messageCount: metrics.totalMessages,
-      metrics,
-      parsedAt: Date.now(),
-      parserVersion: PARSER_VERSION,
-      parseError: undefined,
-      ...(parsed.title ? { contactName: parsed.title } : {}),
+    await db.transaction("rw", db.parsedChats, db.chatMessages, async () => {
+      await db.parsedChats.update(chatId, {
+        status: "parsed",
+        messageCount: metrics.totalMessages,
+        metrics,
+        parsedAt: Date.now(),
+        parserVersion: PARSER_VERSION,
+        parseError: undefined,
+        ...(parsed.title ? { contactName: parsed.title } : {}),
+      });
+
+      // Phase 3 keeps the normalized array locally so the AI sampler does not
+      // need to reparse the raw export. It lives in a separate table to keep
+      // the dashboard's live query small.
+      await db.chatMessages.put({
+        chatId,
+        messages: parsed.messages,
+        updatedAt: Date.now(),
+      });
     });
 
     return "parsed";
@@ -77,13 +88,16 @@ export async function processChat(
     const message =
       error instanceof Error ? error.message : "Could not parse this export.";
 
-    await db.parsedChats.update(chatId, {
-      status: "error",
-      messageCount: 0,
-      metrics: undefined,
-      parsedAt: Date.now(),
-      parserVersion: PARSER_VERSION,
-      parseError: message.slice(0, 280),
+    await db.transaction("rw", db.parsedChats, db.chatMessages, async () => {
+      await db.parsedChats.update(chatId, {
+        status: "error",
+        messageCount: 0,
+        metrics: undefined,
+        parsedAt: Date.now(),
+        parserVersion: PARSER_VERSION,
+        parseError: message.slice(0, 280),
+      });
+      await db.chatMessages.delete(chatId);
     });
 
     return "error";

@@ -1,5 +1,6 @@
 import Dexie, { type EntityTable } from "dexie";
 import type { ChatMetrics } from "@/lib/metrics";
+import type { NormalizedMessage } from "@/lib/parsers/types";
 
 /**
  * Local-first persistence.
@@ -47,6 +48,18 @@ export interface UserPreferences {
   updatedAt: number;
 }
 
+/**
+ * Normalized messages are kept beside the raw export so the local AI can read
+ * a representative sample without reparsing the whole file on every request.
+ * Kept in a separate table so library/dashboard live queries stay lightweight.
+ */
+export interface StoredChatMessages {
+  /** Matches `ParsedChat.id`. */
+  chatId: string;
+  messages: NormalizedMessage[];
+  updatedAt: number;
+}
+
 export const DB_NAME = "chatdecipher";
 
 /**
@@ -59,6 +72,11 @@ const CHAT_STORES = {
   // Indexed columns only — rawChunks stays out of the index to keep it light.
   parsedChats: "id, platform, contactName, timestamp",
   userPreferences: "id",
+} as const;
+
+const CHAT_STORES_V2 = {
+  ...CHAT_STORES,
+  chatMessages: "chatId",
 } as const;
 
 export const PREFERENCES_ID = "app" as const;
@@ -79,12 +97,16 @@ export function getChatStatus(chat: Pick<ParsedChat, "status">): ChatStatus {
 
 class ChatDecipherDatabase extends Dexie {
   parsedChats!: EntityTable<ParsedChat, "id">;
+  chatMessages!: EntityTable<StoredChatMessages, "chatId">;
   userPreferences!: EntityTable<UserPreferences, "id">;
 
   constructor() {
     super(DB_NAME);
 
     this.version(1).stores(CHAT_STORES);
+    // Phase 3 adds normalized messages for local AI sampling. Existing rows
+    // stay untouched and are backfilled lazily the first time Vibe Check runs.
+    this.version(2).stores(CHAT_STORES_V2);
   }
 }
 
@@ -159,17 +181,37 @@ export async function ensurePreferences(): Promise<UserPreferences> {
   return defaults;
 }
 
+/** Deletes one import and its cached normalized messages. */
+export async function deleteChat(chatId: string): Promise<void> {
+  const db = getDb();
+  await db.transaction("rw", db.parsedChats, db.chatMessages, async () => {
+    await db.parsedChats.delete(chatId);
+    await db.chatMessages.delete(chatId);
+  });
+}
+
 /** Wipes chat data only — preferences (theme, plan) survive. */
 export async function clearChatLibrary(): Promise<void> {
-  await getDb().parsedChats.clear();
+  const db = getDb();
+  await db.transaction("rw", db.parsedChats, db.chatMessages, async () => {
+    await db.parsedChats.clear();
+    await db.chatMessages.clear();
+  });
 }
 
 /** Factory reset for the local database. */
 export async function resetLocalData(): Promise<UserPreferences> {
   const db = getDb();
-  await db.transaction("rw", db.parsedChats, db.userPreferences, async () => {
-    await db.parsedChats.clear();
-    await db.userPreferences.clear();
-  });
+  await db.transaction(
+    "rw",
+    db.parsedChats,
+    db.chatMessages,
+    db.userPreferences,
+    async () => {
+      await db.parsedChats.clear();
+      await db.chatMessages.clear();
+      await db.userPreferences.clear();
+    },
+  );
   return ensurePreferences();
 }
