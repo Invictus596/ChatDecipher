@@ -5,6 +5,8 @@ A privacy-first, local-processing chat analyzer and Wingman app.
 > **Status: Phase 1 of 5** — scaffold, Material 3 Expressive shell, IndexedDB schema, and chat-export intake.
 > Chats are stored in the browser. Nothing is uploaded.
 
+![ChatDecipher dashboard in dark mode](docs/dashboard.png)
+
 ## Stack
 
 | Layer | Choice |
